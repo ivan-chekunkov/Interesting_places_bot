@@ -55,11 +55,52 @@ class Adjacent_district(models.Model):
 
 
 class Picture(models.Model):
+    date_created = models.DateTimeField(
+        verbose_name="Дата создания записи",
+        auto_now_add=True,
+    )
     name = models.CharField(
-        max_length=200,
+        max_length=100,
         verbose_name="Наименование изображения",
         help_text="Введите название изображения",
     )
+    image = models.ImageField(
+        upload_to="",
+        verbose_name="Путь до файла изображения",
+        help_text="Укажите путь до файла изображения",
+    )
+
+    class Meta:
+        db_table = "pictures"
+        db_table_comment = "Table of pictures"
+        verbose_name = "Изображение"
+        verbose_name_plural = "Изображения"
+        ordering = ["-date_created"]
+
+    def __str__(self):
+        return self.name[:10]
+
+
+class Category(models.Model):
+    date_created = models.DateTimeField(
+        verbose_name="Дата создания записи",
+        auto_now_add=True,
+    )
+    name = models.CharField(
+        max_length=100,
+        verbose_name="Наименование категории",
+        help_text="Введите название категории",
+    )
+
+    class Meta:
+        db_table = "categorys"
+        db_table_comment = "Table of categorys"
+        verbose_name = "Категория"
+        verbose_name_plural = "Категории"
+        ordering = ["-date_created"]
+
+    def __str__(self):
+        return self.name[:10]
 
 
 class Location(models.Model):
@@ -76,6 +117,18 @@ class Location(models.Model):
         max_length=5000,
         verbose_name="Описание локации",
         help_text="Введите описание локации",
+    )
+    category = models.ForeignKey(
+        to=Category,
+        on_delete=models.CASCADE,
+        blank=True,
+        verbose_name="Категория",
+    )
+    picture = models.ForeignKey(
+        to=Picture,
+        on_delete=models.SET_NULL,
+        null=True,
+        verbose_name="Изображение",
     )
 
     class Meta:

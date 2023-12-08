@@ -79,6 +79,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+MEDIA_ROOT = "/media/"
 
 LANGUAGE_CODE = "en-us"
 

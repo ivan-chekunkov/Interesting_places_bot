@@ -14,7 +14,6 @@ class District(models.Model):
     adjacent_district = models.ManyToManyField(
         to="self",
         through="Adjacent_district",
-        related_name="district",
         blank=True,
     )
 
@@ -51,7 +50,11 @@ class Adjacent_district(models.Model):
         ordering = ["main_district", "neighboring_district"]
 
     def __str__(self) -> str:
-        return self.main_district[:10] + " " + self.neighboring_district[:10]
+        return (
+            self.main_district.name[:10]
+            + "-"
+            + self.neighboring_district.name[:10]
+        )
 
 
 class Picture(models.Model):
@@ -68,6 +71,14 @@ class Picture(models.Model):
         upload_to="",
         verbose_name="Путь до файла изображения",
         help_text="Укажите путь до файла изображения",
+    )
+    location = models.ForeignKey(
+        to="Location",
+        on_delete=models.CASCADE,
+        verbose_name="Локация",
+        blank=True,
+        null=True,
+        related_name="picture",
     )
 
     class Meta:
@@ -93,8 +104,8 @@ class Category(models.Model):
     )
 
     class Meta:
-        db_table = "categorys"
-        db_table_comment = "Table of categorys"
+        db_table = "categoryes"
+        db_table_comment = "Table of categoryes"
         verbose_name = "Категория"
         verbose_name_plural = "Категории"
         ordering = ["-date_created"]
@@ -124,11 +135,11 @@ class Location(models.Model):
         blank=True,
         verbose_name="Категория",
     )
-    picture = models.ForeignKey(
-        to=Picture,
+    district = models.ForeignKey(
+        to=District,
         on_delete=models.SET_NULL,
         null=True,
-        verbose_name="Изображение",
+        verbose_name="Район",
     )
 
     class Meta:

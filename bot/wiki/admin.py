@@ -9,7 +9,6 @@ class LocationAdmin(admin.ModelAdmin):
         "name",
         "description",
         "category",
-        "picture",
     )
     search_fields = ("name",)
     list_filter = ("date_created",)
@@ -20,7 +19,6 @@ class DistrictAdmin(admin.ModelAdmin):
     list_display = (
         "date_created",
         "name",
-        "adjacent_district",
     )
     search_fields = ("name",)
     list_filter = ("date_created",)
@@ -41,6 +39,7 @@ class PictureAdmin(admin.ModelAdmin):
         "date_created",
         "name",
         "image",
+        "location",
     )
     search_fields = ("name",)
     list_filter = ("date_created",)
